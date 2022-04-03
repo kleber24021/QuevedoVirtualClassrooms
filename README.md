@@ -1,0 +1,2 @@
+# QuevedoVirtualClassrooms
+ Trabajo de Fin de Grado de 2DAM Este proyecto pretende ser una herramienta que permita a los profesores de mi instituto subir videos y compartir contenido con sus estudiantes. La intención es conseguir que sea interactiva, de forma que el profesor pueda contestar preguntas y recibir feedback de los alumnos. Consistirá en una aplicación Android programada en Kotlin y Compose y, para el backend, un servidor en Java que gestione la seguridad de las cuentas, el alojamiento de los videos y almacenar información útil para los profesores.
