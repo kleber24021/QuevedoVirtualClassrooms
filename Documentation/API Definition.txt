@@ -1,0 +1,230 @@
+Definición APIS de QuevedoVirtualClassrooms
+
+USERS --------------------------------------------------------------------------------------
+  Endpoint: /virtual-classrooms/users
+
+  POST
+  Create USER:
+    Descripción:
+     - Método para añadir usuarios a la app.
+
+    Accesible por:
+      - Teacher
+    Params:
+      UserPostPutDTO
+    Returns:
+      - UserDTO con id Generada
+
+  PUT
+  Edit USER
+    Descripción:
+      - Método para editar usuarios. Para cambiar contraseñas olvidadas (No válido para añadir usuario a classrooms)
+    Accesible por:
+      - Teacher
+    Params:
+      UserPostPutDTO
+    Returns:
+      - Http Message
+
+  GET
+  Get All Users
+    Descripción:
+      - Método para recuperar todos los usuarios
+    Accesible por:
+      - Teacher
+      - Student
+    Params:
+      none
+    Returns:
+      UserDTO[]
+
+  GET
+  Get specific user:
+    Endpoint:
+      - virtual-classrooms/users/{userId}
+    Descripción:
+      - Método para recuperar un usuario en concreto por id
+    Accesible por:
+      - Teacher
+      - Student
+    Params:
+      - UserId (path)
+    Returns:
+      UserDTO
+
+  DELETE
+  Delete user:
+    Endpoint:
+      - virtual-classrooms/users
+    Descripción:
+      - Método para eliminar un usuario en concreto por id
+    Accesible por:
+      - Teacher
+    Params:
+      - UserId
+    Returns:
+      None (Http message)
+
+
+CLASSROOMS ---------------------------------------------------------------------------------
+
+  Endpoint: /virtual-classrooms/classroom
+
+  POST
+  Create CLASSROOM:
+    Descripción:
+     - Método para añadir "classrooms" a la BBDD.
+    Accesible por:
+      - Teacher
+    Params:
+      ClassroomPostPutDTO
+    Returns:
+      - ID Generada (string)
+      - Http Message
+
+
+  PUT
+  Edit CLASSROOM
+    Descripción:
+      - Método para editar classrooms. Puede servir para añadir usuarios al classroom
+    Accesible por:
+      - Teacher
+    Params:
+      ClassroomPostPutDTO
+    Returns:
+      - Http Message
+
+  GET
+  Get All CLASSROOMS by userId
+    Descripción:
+      - Método para recuperar todas las classrooms
+    Accesible por:
+      - Teacher
+      - Student
+    Params:
+      userId
+    Returns:
+      classroomDTO[]
+
+  GET
+  Get specific classroom:
+    Endpoint:
+      - virtual-classrooms/classroom/{classroomId}
+    Descripción:
+      - Método para recuperar un classroom en concreto por id
+    Accesible por:
+      - Teacher
+      - Student
+    Params:
+      - ClassroomId
+    Returns:
+      - ClassroomDTO
+
+  DELETE
+  Delete classroom:
+    Descripción:
+      - Método para eliminar un classroom en concreto por id
+    Accesible por:
+      - Teacher dueño de ese classroom
+    Params:
+      - ClassroomId
+    Returns:
+      - HttpMessage
+
+RESOURCE --------------------------------------------------------------------------------------
+  Endpoint: /virtual-classrooms/resources
+
+  POST
+  Upload RESOURCE (form-data)
+    Descripción:
+      - Método para añadir un recurso al servidor
+    Accesible por:
+      - Teacher del classroom al que se sube el recurso
+    Params:
+      - ClassroomId
+      - ResourceDTO
+    Returns:
+      - Resource subido
+
+  PUT
+  Edit ResourceInfo
+    Descripción:
+      - Método para editar la información del resource
+    Accesible por:
+      - Teacher del classroom al que pertenezca el resource
+    Params:
+      - ResourcePostDTO
+    Returns:
+      - EditedVideo
+  GET
+  Get all resources VideoInfo
+    Endpoint:
+      /virtual-classrooms/resources/all
+    Descripción:
+      - Método para obtener todos los recursos de un classroom
+    Accesible por:
+      - Todos
+    Params:
+      - ClassroomId
+    Returns:
+      - List<ResourceLiteDTO>
+
+  GET
+  Get single resource (get resource file)
+    Endpoint:
+      /virtual-classrooms/resources/file/{resourceId}.{extension}
+    Descripción:
+      - Método para conseguir el archivo de un recurso
+    Accesible por:
+      - Todos
+    Params:
+      - resourceId por path
+    Returns:
+      - ResourceGetLiteDTO
+
+  GET
+  Get single resource info
+    Endpoint:
+      /virtual-classrooms/resources/detail/{resourceId}
+    Descripción:
+      - Método para conseguir la información en detalle de un recurso
+    Accesible por:
+      - Todos
+    Params:
+      - resourceId por path
+    Returns:
+      -ResourceGetDetailDTO
+
+  DELETE
+  Delete video
+    Descripción:
+      - Método para eliminar un recurso del servidor
+    Accesible por:
+      - Teacher del classroom al que pertenece el recurso
+    Params:
+      - ResourceId
+    Returns:
+      - HttpResponse
+COMMENTS_VIDEO -----------------------------------------------------------------------------
+  Endpoint: /virtual-classrooms/comments
+
+  POST
+  Post video comment
+    Descripción:
+      - Método para comentar un vídeo
+    Accesible por:
+      - Todos
+    Params:
+      - VideoCommentDTO
+    Returns:
+      - VideoCommentDTO
+  DELETE
+  Delete comment
+    Descripción:
+      - Método para eliminar comentario de un vídeo
+    Accesible por:
+      - Teacher del classroom al que pertenece el comentario y autor del comentario
+    Params:
+      - CommentID
+    Returns:
+      - HttpResponse

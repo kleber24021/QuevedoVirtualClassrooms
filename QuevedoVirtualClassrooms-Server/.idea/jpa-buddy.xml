@@ -2,5 +2,8 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="defaultUnitInitialized" value="true" />
+    <option name="reIgnoreSlowDbConnections">
+      <ignoreDs id="a365c570-f4d4-40aa-8512-65b7ec9e99bb" />
+    </option>
   </component>
 </project>

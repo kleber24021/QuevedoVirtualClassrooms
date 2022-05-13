@@ -9,7 +9,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.DataConsts
-import org.quevedo.quevedovirtualclassrooms.data.sources.remote.QuevedoVideoService
+import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ClassroomService
+import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ResourceService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -55,8 +56,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideVideoService(retrofit: Retrofit): QuevedoVideoService =
-        retrofit.create(QuevedoVideoService::class.java)
+    fun provideVideoService(retrofit: Retrofit): ResourceService =
+        retrofit.create(ResourceService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideClassroomService(retrofit: Retrofit): ClassroomService =
+        retrofit.create(ClassroomService::class.java)
 
     @Named(DataConsts.IO_DISPATCHER)
     @Provides

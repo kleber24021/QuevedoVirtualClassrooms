@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://dam2.mysql.iesquevedo.es:3335/QuevedoClassrooms?useSSL=false</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@dam2.mysql.iesquevedo.es" uuid="c6be9379-b679-4e3e-80d9-39dcb13b23a7">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://dam2.mysql.iesquevedo.es:3335?useSSL=false</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

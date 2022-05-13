@@ -3,11 +3,11 @@ package org.quevedo.quevedovirtualclassrooms
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import org.quevedo.quevedovirtualclassrooms.ui.theme.QuevedoVirtualClassroomsTheme
+import org.quevedo.quevedovirtualclassrooms.ui.theme.QueVirtualClassTheme
 
 @Composable
 fun QueVirtualClassApp(content: @Composable () -> Unit){
-    QuevedoVirtualClassroomsTheme {
+    QueVirtualClassTheme {
         Surface(color = MaterialTheme.colors.background) {
             content()
         }
