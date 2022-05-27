@@ -24,14 +24,18 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import org.quevedo.quevedovirtualclassrooms.QueVirtualClassApp
 import org.quevedo.quevedovirtualclassrooms.data.models.common.ResourceType
 import org.quevedo.quevedovirtualclassrooms.data.models.resource.ResourceDetailGetDTO
-import org.quevedo.quevedovirtualclassrooms.ui.components.MyTopBar
 
 @Composable
 fun ResourceDetailScreen(
+    hasBackStack: Boolean,
+    onBack: () -> Unit,
     resourceId: String
 ) {
     val viewModel: ResourceDetailViewModel = hiltViewModel()
-    QueVirtualClassApp {
+    QueVirtualClassApp(
+        hasBackStack = hasBackStack,
+        onBackAction = onBack
+    ) { paddingModifier ->
         val uiState = viewModel.uiState.collectAsState()
         val scaffoldState = rememberScaffoldState()
         remember {
@@ -48,51 +52,47 @@ fun ResourceDetailScreen(
                 }
             }
         }
-        Scaffold(
-            topBar = { MyTopBar() }
-        ) { padding ->
-            val resource = uiState.value.resource
-            Column(modifier = Modifier.fillMaxSize()) {
-                when (resource?.resourceType) {
-                    ResourceType.IMAGE -> {
-                        ImageShower(
-                            imageUrl = uiState.value.resource?.resourceUrl
-                                ?: "https://cdn-icons-png.flaticon.com/512/107/107817.png",
-                            contentDescription = resource.resourceName,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f, fill = true)
-                                .background(Color.Black)
-                        )
-                    }
-                    ResourceType.VIDEO -> {
-                        VideoPlayer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f, fill = true)
-                                .background(Color.Black),
-                            videoResource = resource
-                        )
-                    }
-                    else -> {
-                        Text(
-                            text = "URL not supported yet",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f, fill = true)
-                                .background(Color.Black)
-                        )
-                    }
+        val resource = uiState.value.resource
+        Column(modifier = Modifier.fillMaxSize()) {
+            when (resource?.resourceType) {
+                ResourceType.IMAGE -> {
+                    ImageShower(
+                        imageUrl = uiState.value.resource?.resourceUrl
+                            ?: "https://cdn-icons-png.flaticon.com/512/107/107817.png",
+                        contentDescription = resource.resourceName,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, fill = true)
+                            .background(Color.Black)
+                    )
                 }
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f, fill = true)
-                        .background(Color.Gray)
-                ) {
-                    Text(text = "Comments will go here")
+                ResourceType.VIDEO -> {
+                    VideoPlayer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, fill = true)
+                            .background(Color.Black),
+                        videoResource = resource
+                    )
                 }
+                else -> {
+                    Text(
+                        text = "URL not supported yet",
+                        style = MaterialTheme.typography.h2,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, fill = true)
+                            .background(Color.Black)
+                    )
+                }
+            }
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, fill = true)
+                    .background(Color.Gray)
+            ) {
+                Text(text = "Comments will go here")
             }
         }
     }
@@ -166,7 +166,7 @@ fun VideoPlayer(
         }
     }
     Column {
-        if (visibleState.value){
+        if (visibleState.value) {
             Text(text = videoTitle.value)
         }
         DisposableEffect(

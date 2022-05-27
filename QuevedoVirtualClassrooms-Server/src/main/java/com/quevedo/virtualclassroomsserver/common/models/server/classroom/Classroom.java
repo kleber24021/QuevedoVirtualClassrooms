@@ -5,7 +5,6 @@ import com.quevedo.virtualclassroomsserver.common.models.server.user.User;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

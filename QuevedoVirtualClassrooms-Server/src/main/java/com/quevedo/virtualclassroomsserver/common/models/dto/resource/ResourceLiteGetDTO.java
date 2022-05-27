@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ResourceLiteGetDTO {
     private String uuidResource;
     private String resourceName;
-    private String resourceUrl;
+    private String resourceEndpoint;
     private LocalDateTime timestamp;
     private ResourceType resourceType;
 }

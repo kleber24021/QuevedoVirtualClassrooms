@@ -1,5 +1,5 @@
 #Fileupload config
-uploadPath: D:\ResourcesUploaded
+uploadPath: /opt/payara/deployments/resources
 
 #Database connection config
 path: jdbc:mysql://dam2.mysql.iesquevedo.es:3335/QuevedoClassrooms?useSSL=false

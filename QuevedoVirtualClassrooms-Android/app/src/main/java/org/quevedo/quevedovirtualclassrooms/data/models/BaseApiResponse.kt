@@ -41,7 +41,7 @@ abstract class BaseApiResponse {
     }
 
     private fun <T> error(errorMessage: String): NetworkResult<T> =
-        NetworkResult.Error("API FAILED" + errorMessage)
+        NetworkResult.Error("API FAILED: $errorMessage")
 }
 
 sealed class NetworkResult<T>(

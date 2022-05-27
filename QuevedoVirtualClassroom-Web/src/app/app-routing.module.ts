@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { VideosComponent } from './pages/videos/videos.component';
-import { UploadComponent } from './pages/upload/upload.component';
+import {LoginComponent} from "./pages/login/login.component";
+import {ResourcesListComponent} from "./pages/resources/resourcesList.component";
+import {UploadComponent} from "./pages/upload/upload.component";
+import {UsersLIstComponent} from "./pages/users/usersLIst.component";
+import {ClassroomsListComponent} from "./pages/classrooms/classroomsList.component";
+
 
 const routes: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: 'video/:id', component: VideosComponent},
+  {path: 'classrooms', component: ClassroomsListComponent},
+  {path: 'resources', component: ResourcesListComponent},
   {path: 'upload', component: UploadComponent},
+  {path: 'users', component: UsersLIstComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'home', component: HomeComponent},
   {path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];
 

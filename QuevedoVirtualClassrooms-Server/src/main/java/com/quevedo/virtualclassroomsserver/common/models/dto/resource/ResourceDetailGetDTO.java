@@ -1,6 +1,7 @@
 package com.quevedo.virtualclassroomsserver.common.models.dto.resource;
 
 import com.quevedo.virtualclassroomsserver.common.models.common.ResourceType;
+import com.quevedo.virtualclassroomsserver.common.models.server.resource.ResourceComment;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,9 +13,9 @@ import java.util.List;
 public class ResourceDetailGetDTO {
     private String uuidResource;
     private String resourceName;
-    private String resourceUrl;
+    private String resourceEndpoint;
     private LocalDateTime timestamp;
     private String classroomUUID;
     private ResourceType resourceType;
-    private List<ResourceCommentDTO> comments;
+    private List<ResourceComment> comments;
 }

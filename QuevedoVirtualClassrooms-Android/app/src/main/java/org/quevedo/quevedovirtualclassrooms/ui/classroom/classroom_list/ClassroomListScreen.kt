@@ -1,5 +1,6 @@
 package org.quevedo.quevedovirtualclassrooms.ui.classroom.classroom_list
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,11 +19,16 @@ import org.quevedo.quevedovirtualclassrooms.ui.components.StandardCard
 
 @Composable
 fun ClassroomListScreen(
+    hasBackStack: Boolean,
+    onBack: () -> Unit,
     loggedUsername: String,
     onNavigate: (classroomId: String) -> Unit
 ) {
     val viewModel: ClassroomListViewModel = hiltViewModel()
-    QueVirtualClassApp {
+    QueVirtualClassApp(
+        hasBackStack = hasBackStack,
+        onBackAction = onBack
+    ) { paddingModifier ->
         val uiState = viewModel.uiState.collectAsState()
         val scaffoldState = rememberScaffoldState()
         remember {
@@ -39,28 +45,23 @@ fun ClassroomListScreen(
                 }
             }
         }
-        Scaffold(
-            topBar = { MyTopBar() }
-        ) { padding ->
-            Column(
-                modifier = Modifier
-                    .padding(padding),
-                verticalArrangement = Arrangement.SpaceEvenly) {
-                Text(
-                    text = "Hi $loggedUsername \uD83D\uDC4B",
-                    style = MaterialTheme.typography.h3,
-                    modifier = Modifier.padding(start = 30.dp, top = 5.dp)
-                )
-                Text(
-                    text = "Ready to learn?",
-                    style = MaterialTheme.typography.h1,
-                    modifier = Modifier.padding(start = 30.dp, top = 5.dp))
-                ClassroomList(
-                    classrooms = uiState.value.classrooms ?: emptyList(),
-                    onClick = {
-                        onNavigate(it.uuidClassroom)
-                    })
-            }
+        Column(
+            modifier = paddingModifier,
+            verticalArrangement = Arrangement.SpaceEvenly) {
+            Text(
+                text = "Hi $loggedUsername \uD83D\uDC4B",
+                style = MaterialTheme.typography.h3,
+                modifier = Modifier.padding(start = 30.dp, top = 5.dp)
+            )
+            Text(
+                text = "Ready to learn?",
+                style = MaterialTheme.typography.h1,
+                modifier = Modifier.padding(start = 30.dp, top = 5.dp))
+            ClassroomList(
+                classrooms = uiState.value.classrooms ?: emptyList(),
+                onClick = {
+                    onNavigate(it.uuidClassroom)
+                })
         }
     }
 }

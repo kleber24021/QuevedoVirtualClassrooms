@@ -2,7 +2,6 @@ package com.quevedo.virtualclassroomsserver.common.models.dto.classroom;
 
 import lombok.Builder;
 import lombok.Data;
-
 import java.util.List;
 
 @Data

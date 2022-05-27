@@ -1,7 +1,9 @@
 package com.quevedo.virtualclassroomsserver.common.models.dto.user;
 
 import com.quevedo.virtualclassroomsserver.common.models.common.UserType;
+import lombok.Data;
 
+@Data
 public class UserPostPutDTO {
     private String username;
     private String password;
