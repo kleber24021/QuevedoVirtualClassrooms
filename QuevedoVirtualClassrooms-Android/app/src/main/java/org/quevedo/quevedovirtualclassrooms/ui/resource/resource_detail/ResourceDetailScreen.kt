@@ -35,7 +35,7 @@ fun ResourceDetailScreen(
     QueVirtualClassApp(
         hasBackStack = hasBackStack,
         onBackAction = onBack
-    ) { paddingModifier ->
+    ) { _ ->
         val uiState = viewModel.uiState.collectAsState()
         val scaffoldState = rememberScaffoldState()
         remember {

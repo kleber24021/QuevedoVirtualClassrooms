@@ -3,13 +3,15 @@ package org.quevedo.quevedovirtualclassrooms.data.sources.remote
 import org.quevedo.quevedovirtualclassrooms.data.models.BaseApiResponse
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ClassroomService
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ResourceService
+import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.UserService
 import javax.inject.Inject
 
 class RemoteDataSource
 @Inject
 constructor(
     private val resourceService: ResourceService,
-    private val classroomService: ClassroomService
+    private val classroomService: ClassroomService,
+    private val userService: UserService
     ) : BaseApiResponse(){
     suspend fun getAllResourcesByClassroomId(classroomId: String) = safeApiCall(
         apiCall = { resourceService.getAllResourcesByClassroomId(classroomId) }
@@ -19,5 +21,8 @@ constructor(
     )
     suspend fun getAllClassroomsByUsername(username: String) = safeApiCall(
         apiCall = {classroomService.getAllClassroomsByUsername(username)}
+    )
+    suspend fun getUserDetail(username: String) = safeApiCall(
+        apiCall = {userService.getUserByUsername(username)}
     )
 }

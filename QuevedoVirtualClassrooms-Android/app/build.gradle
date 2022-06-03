@@ -61,7 +61,7 @@ android {
             signingConfig signingConfigs.prod
         }
         dev{
-            buildConfigField 'String', 'BASE_URL', '"http://192.168.1.133:8080/QuevedoVirtualClassrooms-Server-1.0-SNAPSHOT/virtual-classrooms/"'
+            buildConfigField 'String', 'BASE_URL', '"http://192.168.1.131:8080:8080/QueVirtualClassroom-1.0/virtual-classrooms/"'
             signingConfig signingConfigs.dev
         }
     }
