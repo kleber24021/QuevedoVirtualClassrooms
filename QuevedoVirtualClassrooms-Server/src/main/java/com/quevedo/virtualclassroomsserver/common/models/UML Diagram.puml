@@ -1,0 +1,68 @@
+@startuml
+
+Enum ResourceType{
+    IMAGEN
+    VIDEO
+    URL
+}
+
+Enum UserType{
+    TEACHER
+    STUDENT
+}
+
+ResourceType --> Resource
+
+class Resource{
+    - uuidResource
+    - resourceName
+    - resourceEnpoint
+    - timestamp
+    - classroomId
+    - resourceType
+    - comments
+    - visualizations
+    toLiteDto()
+    toDetailDto()
+}
+ResourceComment --> Resource
+class ResourceComment {
+    - uuidComment
+    - text
+    - usernameOwner
+    - timestamp
+    - answersTo
+}
+
+class Classroom{
+    - uuidClassroom
+    - name
+    - course
+    - admin
+    - students
+}
+
+UserType --> User
+User --> Classroom
+class User{
+    -username
+    -hashedPassword
+    -name
+    -surname
+    -email
+    -profileImage?
+    -userType
+}
+
+User <-- UserVisualization
+class UserVisualization{
+    -username
+    -resource
+    -timestamp
+}
+
+
+
+
+
+@enduml
