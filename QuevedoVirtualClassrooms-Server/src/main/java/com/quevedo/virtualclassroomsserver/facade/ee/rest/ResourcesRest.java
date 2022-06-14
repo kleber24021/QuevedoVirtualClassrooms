@@ -1,6 +1,7 @@
 package com.quevedo.virtualclassroomsserver.facade.ee.rest;
 
-import com.quevedo.virtualclassroomsserver.common.models.dto.resource.ResourcePostDTO;
+import com.quevedo.virtualclassroomsserver.common.models.dto.resource.ResourcePutDTO;
+import com.quevedo.virtualclassroomsserver.common.models.dto.resource.comment.ResourceCommentPost;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,7 +20,12 @@ public interface ResourcesRest {
     Response getResourceDetail(@PathParam("resourceId") String resourceId);
 
     @PUT
-    Response editResourceInfo(ResourcePostDTO toEdit);
+    @Produces(MediaType.TEXT_PLAIN)
+    Response editResourceInfo(ResourcePutDTO toEdit);
+
+    @POST
+    @Path("/comment")
+    Response postNewComment(ResourceCommentPost resourceCommentPost);
 
     @DELETE
     @Path("/{resourceId}")

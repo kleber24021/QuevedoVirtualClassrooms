@@ -1,5 +1,6 @@
 package org.quevedo.quevedovirtualclassrooms.data.sources.remote.di
 
+import android.util.Base64
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,7 @@ import org.quevedo.quevedovirtualclassrooms.data.sources.remote.DataConsts
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.SessionManager
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ClassroomService
 import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.ResourceService
+import org.quevedo.quevedovirtualclassrooms.data.sources.remote.services.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
@@ -72,6 +74,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideUserService(retrofit: Retrofit): UserService =
+        retrofit.create(UserService::class.java)
+
+    @Singleton
+    @Provides
     fun provideAuthRequestInterceptor(
         sessionManager: SessionManager
     ): Interceptor {
@@ -84,7 +91,7 @@ object NetworkModule {
                 chain.request().newBuilder()
                     .header(
                         "Authorization",
-                        "Basic ${sessionManager.username}:${sessionManager.password}"
+                        "Basic " + Base64.encodeToString("${sessionManager.username.trim()}:${sessionManager.password.trim()}".toByteArray(Charsets.UTF_8), Base64.URL_SAFE).trim()
                     )
                     .build()
             }

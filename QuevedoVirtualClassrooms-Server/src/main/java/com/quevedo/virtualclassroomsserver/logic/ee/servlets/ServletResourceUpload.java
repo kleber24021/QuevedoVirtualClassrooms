@@ -1,17 +1,21 @@
 package com.quevedo.virtualclassroomsserver.logic.ee.servlets;
 
 import com.google.gson.Gson;
+import com.quevedo.virtualclassroomsserver.common.constants.RestConsts;
 import com.quevedo.virtualclassroomsserver.common.models.common.ResourceType;
 import com.quevedo.virtualclassroomsserver.common.models.dto.resource.ResourcePostDTO;
 import com.quevedo.virtualclassroomsserver.facade.services.ResourceServices;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.ws.rs.core.MediaType;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -52,6 +56,7 @@ public class ServletResourceUpload extends HttpServlet {
             String[] allowedMimeTypes = new String[]{
                     "video/mp4",
                     "image/jpg",
+                    "image/jpeg",
                     "image/png"
             };
             if (!ArrayUtils.contains(allowedMimeTypes, mimeType.toLowerCase())) {
@@ -66,12 +71,21 @@ public class ServletResourceUpload extends HttpServlet {
             resourcePostDTO.setResourceType(ResourceType.getTypeByString(request.getParameter("resourceType")));
 
             resourceServices.uploadResource(resourcePostDTO)
-                    .peek(result -> jsonResponseData.set(gson.toJson(result)))
-                    .peekLeft(error -> jsonResponseData.set(gson.toJson(error)));
+                    .peek(result -> {
+                        jsonResponseData.set(gson.toJson(result));
+                        response.setContentType(MediaType.APPLICATION_JSON);
+                    })
+                    .peekLeft(error -> {
+                        jsonResponseData.set(gson.toJson(error));
+                        response.setContentType(MediaType.TEXT_PLAIN);
+                        response.setStatus(400);
+                    });
+
         } catch (Exception e) {
             jsonResponseData.set(e.getMessage());
+            response.setStatus(400);
+            response.setContentType(MediaType.TEXT_PLAIN);
         } finally {
-            response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(jsonResponseData.get());
         }

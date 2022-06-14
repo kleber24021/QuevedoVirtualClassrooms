@@ -33,8 +33,6 @@ public class UserDaoImpl implements UserDao {
         this.userRowMapper = userRowMapper;
     }
 
-    // TODO: 22/05/2022 Añadir comprobación de contraseñas, al actualizar o borrar
-
     @Override
     public Either<String, UserGetDTO> createUser(UserPostPutDTO userPostPutDTO) {
         Either<String, UserGetDTO> result;
@@ -45,7 +43,8 @@ public class UserDaoImpl implements UserDao {
                     userPostPutDTO.getSurname(),
                     userPostPutDTO.getPassword(),
                     userPostPutDTO.getProfileImage(),
-                    userPostPutDTO.getUserType().getVal()) > 0) {
+                    userPostPutDTO.getUserType().getVal(),
+                    userPostPutDTO.getEmail()) > 0) {
                 result = Either.right(
                         UserGetDTO.builder()
                                 .username(userPostPutDTO.getUsername())
@@ -72,7 +71,6 @@ public class UserDaoImpl implements UserDao {
             if (template.update(queriesLoader.getUpdateUser(),
                     userPostPutDTO.getName(),
                     userPostPutDTO.getSurname(),
-                    userPostPutDTO.getPassword(),
                     userPostPutDTO.getProfileImage(),
                     userPostPutDTO.getUserType().getVal(),
                     userPostPutDTO.getUsername()) > 0) {
@@ -87,6 +85,23 @@ public class UserDaoImpl implements UserDao {
                 result = Either.left("ERROR: Record could not be edited. Check username");
             }
         } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage(), dataAccessException);
+            result = Either.left(dataAccessException.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public Either<String, String> editUserPassword(String username, String hashedPassword) {
+        Either<String, String> result;
+        try {
+            if (template.update(queriesLoader.getUpdateUserPassword(),
+                    hashedPassword, username) != 0) {
+                result = Either.right("Changed password");
+            }else {
+                result = Either.left("Password couldnt be changed");
+            }
+        }catch (DataAccessException dataAccessException){
             log.error(dataAccessException.getMessage(), dataAccessException);
             result = Either.left(dataAccessException.toString());
         }

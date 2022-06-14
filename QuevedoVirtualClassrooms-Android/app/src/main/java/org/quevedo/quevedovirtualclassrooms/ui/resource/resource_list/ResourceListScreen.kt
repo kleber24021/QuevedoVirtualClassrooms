@@ -1,5 +1,6 @@
 package org.quevedo.quevedovirtualclassrooms.ui.resource.resource_list
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
@@ -16,16 +17,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.quevedo.quevedovirtualclassrooms.QueVirtualClassApp
+import org.quevedo.quevedovirtualclassrooms.data.models.common.ResourceType
 import org.quevedo.quevedovirtualclassrooms.data.models.resource.ResourceLiteGetDTO
 import org.quevedo.quevedovirtualclassrooms.ui.components.StandardCard
+import org.quevedo.quevedovirtualclassrooms.ui.login.LoginContract
 import org.quevedo.quevedovirtualclassrooms.ui.resource.resource_list.ResourceListContract.Event
 
 @Composable
 fun ResourceListScreen(
     classroomId: String,
+    resourceType: ResourceType,
     hasBackStack: Boolean,
     onBack: () -> Unit,
     onNavigate: (resourceId: String) -> Unit
@@ -36,18 +41,18 @@ fun ResourceListScreen(
         hasBackStack = hasBackStack
     ) { paddingModifier ->
         val uiState = viewModel.uiState.collectAsState()
-        val scaffoldState = rememberScaffoldState()
+        val mContext = LocalContext.current
+
         remember {
             viewModel.handleEvent(Event.SetClassroomId(classroomId))
+            viewModel.handleEvent(Event.SetResourceType(resourceType))
             viewModel.handleEvent(Event.GetData)
         }
         LaunchedEffect(key1 = true) {
             viewModel.uiState.collect { state ->
                 state.error?.let {
-                    val result = scaffoldState.snackbarHostState.showSnackbar(message = it)
-                    if (result == SnackbarResult.ActionPerformed) {
-                        viewModel.handleEvent(Event.ErrorMostrado)
-                    }
+                    Toast.makeText(mContext, it, Toast.LENGTH_SHORT).show()
+                    viewModel.handleEvent(Event.ErrorMostrado)
                 }
             }
         }

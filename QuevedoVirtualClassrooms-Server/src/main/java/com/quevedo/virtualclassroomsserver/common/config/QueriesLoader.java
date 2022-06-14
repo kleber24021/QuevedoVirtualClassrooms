@@ -28,6 +28,7 @@ public class QueriesLoader {
     public static final String SELECT_STUDENTS_BY_CLASSROOM_ID = "SELECT_STUDENTS_BY_CLASSROOM_ID";
     public static final String INSERT_USER = "INSERT_USER";
     public static final String UPDATE_USER = "UPDATE_USER";
+    public static final String UPDATE_USER_PASSWORD = "UPDATE_USER_PASSWORD";
     public static final String GET_ALL_USERS = "GET_ALL_USERS";
     public static final String GET_ALL_STUDENTS_BY_CLASSROOM_ID = "GET_ALL_STUDENTS_BY_CLASSROOM_ID";
     public static final String GET_TEACHER_BY_CLASSROOM_ID = "GET_TEACHER_BY_CLASSROOM_ID";
@@ -54,13 +55,20 @@ public class QueriesLoader {
 
     private String insertUser;
     private String updateUser;
+    private String updateUserPassword;
     private String getAllUsers;
     private String getAllStudentsByClassroomId;
     private String getTeacherByClassroomId;
     private String getUser;
     private String deleteUser;
 
-    void loadQueries(InputStream fileStream){
+    private String insertVisualization;
+    private String getVisualizationByResource;
+
+    private String insertComment;
+    private String getCommentsByResource;
+
+    void loadQueries(InputStream fileStream) {
         try {
             Yaml yaml = new Yaml();
             Map<String, String> map;
@@ -81,13 +89,16 @@ public class QueriesLoader {
             this.selectUsernamesFromClassroom = map.get(SELECT_STUDENTS_BY_CLASSROOM_ID);
             this.insertUser = map.get(INSERT_USER);
             this.updateUser = map.get(UPDATE_USER);
+            this.updateUserPassword = map.get(UPDATE_USER_PASSWORD);
             this.getAllUsers = map.get(GET_ALL_USERS);
             this.getAllStudentsByClassroomId = map.get(GET_ALL_STUDENTS_BY_CLASSROOM_ID);
             this.getTeacherByClassroomId = map.get(GET_TEACHER_BY_CLASSROOM_ID);
             this.getUser = map.get(GET_USER);
             this.deleteUser = map.get(DELETE_USER);
-
-        }catch (Exception exception){
+            this.insertVisualization = map.get("INSERT_VISUALIZATION");
+            this.getVisualizationByResource = map.get("GET_VISUALIZATIONS_BY_RESOURCE");
+            this.insertComment = map.get("INSERT_COMMENT");
+        } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
         }
     }

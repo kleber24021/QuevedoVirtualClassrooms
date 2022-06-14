@@ -28,7 +28,12 @@ public class ServletVideoServe extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String filename = URLDecoder.decode(request.getPathInfo().substring(1), "UTF-8");
         String extension = filename.split("\\.")[1];
-        Either<String, File> result = resourceServices.getResourceFile(filename);
+        String[] usernameParams = request.getParameterValues("username");
+        String usernameParam = "ANONYMOUS";
+        if (usernameParams != null){
+            usernameParam = usernameParams[0];
+        }
+        Either<String, File> result = resourceServices.getResourceFile(filename, usernameParam);
         if (result.isRight()){
             try {
                 switch (extension){
@@ -37,6 +42,9 @@ public class ServletVideoServe extends HttpServlet {
                         break;
                     case "jpg":
                         response.setContentType("image/jpg");
+                        break;
+                    case "jpeg":
+                        response.setContentType("image/jpeg");
                         break;
                     case "png":
                         response.setContentType("image/png");

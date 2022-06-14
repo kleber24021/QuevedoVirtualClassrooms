@@ -2,6 +2,7 @@ package com.quevedo.virtualclassroomsserver.common.models.dto.resource;
 
 import com.quevedo.virtualclassroomsserver.common.models.common.ResourceType;
 import com.quevedo.virtualclassroomsserver.common.models.server.resource.ResourceComment;
+import com.quevedo.virtualclassroomsserver.common.models.server.user.UserVisualization;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,4 +19,5 @@ public class ResourceDetailGetDTO {
     private String classroomUUID;
     private ResourceType resourceType;
     private List<ResourceComment> comments;
+    private List<UserVisualization> visualizations;
 }

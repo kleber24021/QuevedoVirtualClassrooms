@@ -23,7 +23,7 @@ class ResourceListViewModel @Inject constructor(
             is ResourceListContract.Event.GetData -> {
                 viewModelScope.launch {
                     getAllResourcesByClassroomId
-                        .invoke(uiState.value.actualClassroomId)
+                        .invoke(uiState.value.actualClassroomId, uiState.value.resourceType)
                         .catch(action = {cause ->
                             _uiState.update {
                                 it.copy(
@@ -66,6 +66,13 @@ class ResourceListViewModel @Inject constructor(
             is ResourceListContract.Event.ErrorMostrado -> {
                 _uiState.update {
                     it.copy(error = null)
+                }
+            }
+            is ResourceListContract.Event.SetResourceType -> {
+                _uiState.update {
+                    it.copy(
+                        resourceType = event.resourceType
+                    )
                 }
             }
         }

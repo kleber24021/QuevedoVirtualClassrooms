@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserDao {
     Either<String, UserGetDTO> createUser(UserPostPutDTO userPostPutDTO);
     Either<String, UserGetDTO> editUser(UserPostPutDTO userPostPutDTO);
+    Either<String, String> editUserPassword(String username, String hashedPassword);
     Either<String, List<UserGetDTO>> getAllUsers();
     Either<String, List<UserGetDTO>> getUsuariosByClassroom(String classroomId);
     Either<String, UserGetDTO> getUser(String username);

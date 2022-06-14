@@ -6,12 +6,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.quevedo.quevedovirtualclassrooms.data.models.NetworkResult
+import org.quevedo.quevedovirtualclassrooms.data.models.resource.ResourceCommentPost
+import org.quevedo.quevedovirtualclassrooms.data.sources.remote.SessionManager
 import org.quevedo.quevedovirtualclassrooms.usecases.resource.GetResourceDetailById
+import org.quevedo.quevedovirtualclassrooms.usecases.resource.PostNewComment
 import javax.inject.Inject
 
 @HiltViewModel
 class ResourceDetailViewModel @Inject constructor(
-    private val getResourceDetailById: GetResourceDetailById
+    private val getResourceDetailById: GetResourceDetailById,
+    private val postNewComment: PostNewComment,
+    private val sessionManager: SessionManager
 ): ViewModel(){
     private val _uiState: MutableStateFlow<ResourceDetailContract.State> by lazy {
         MutableStateFlow(ResourceDetailContract.State())
@@ -47,7 +52,8 @@ class ResourceDetailViewModel @Inject constructor(
                                 is NetworkResult.Success -> {
                                     _uiState.update { state ->
                                         state.copy(
-                                            resource = result.data
+                                            resource = result.data,
+                                            comments = result.data?.comments!!.toMutableList()
                                         )
                                     }
                                 }
@@ -58,6 +64,30 @@ class ResourceDetailViewModel @Inject constructor(
             is ResourceDetailContract.Event.ErrorMostrado -> {
                 _uiState.update {
                     it.copy(error = null)
+                }
+            }
+            is ResourceDetailContract.Event.SendComment -> {
+                val commentToSend = ResourceCommentPost(event.text, sessionManager.username, event.answersTo, _uiState.value.resourceId)
+                viewModelScope.launch {
+                    postNewComment
+                        .invoke(commentToSend)
+                        .catch(action = {cause ->
+                            _uiState.update {
+                                it.copy(
+                                    error = cause.message ?: "Unexpected error"
+                                )
+                            }
+                        })
+                        .collect{result ->
+                            when(result){
+                                is NetworkResult.Error -> {
+                                    _uiState.update { it.copy(error = result.message) }
+                                }
+                                is NetworkResult.Success -> {
+                                    handleEvent(ResourceDetailContract.Event.GetObject)
+                                }
+                            }
+                        }
                 }
             }
         }

@@ -147,7 +147,9 @@ public class ClassroomDaoImpl implements ClassroomDao {
     public Either<String, ClassroomGetDTO> getClassroomById(String classroomId) {
         Either<String, ClassroomGetDTO> result;
         try {
-            result = Either.right(jdbcTemplate.queryForObject(queriesLoader.getSelectClassroomById(), classroomRowMapper, classroomId).toGetDTO());
+            ClassroomGetDTO classroomGetDTO = jdbcTemplate.queryForObject(queriesLoader.getSelectClassroomById(), classroomRowMapper, classroomId).toGetDTO();
+            classroomGetDTO.setStudentsUsernames(jdbcTemplate.query(queriesLoader.getGetAllStudentsByClassroomId(), usernameRowMapper(), classroomId));
+            result = Either.right(classroomGetDTO);
         } catch (DataAccessException dataAccessException) {
             result = Either.left("DB ERROR: " + dataAccessException.getMessage());
         }

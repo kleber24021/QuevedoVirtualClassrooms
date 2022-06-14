@@ -11,6 +11,7 @@ import io.vavr.control.Either;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UserServicesImpl implements UserServices {
     private final UserDao userDao;
@@ -31,7 +32,17 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public Either<String, UserGetDTO> editUser(UserPostPutDTO userPostPutDTO) {
-        return userDao.editUser(userPostPutDTO);
+        AtomicReference<Either<String, UserGetDTO>> resultReference = new AtomicReference<>();
+        if (userPostPutDTO.getPassword() != null && !userPostPutDTO.getPassword().isBlank()){
+            resultReference.set(userDao.editUser(userPostPutDTO));
+            if (resultReference.get().isRight()){
+                userDao.editUserPassword(userPostPutDTO.getUsername(), serviceHashPassword.hash(userPostPutDTO.getPassword()))
+                        .peekLeft(errorMsg -> resultReference.set(Either.left("Se ha cambiado la información pero no la contraseña: " + errorMsg)));
+            }
+        }else {
+            resultReference.set(userDao.editUser(userPostPutDTO));
+        }
+        return resultReference.get();
     }
 
     @Override

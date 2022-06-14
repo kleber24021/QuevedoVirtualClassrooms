@@ -14,10 +14,11 @@ public class UserRowMapper implements RowMapper<User> {
         try {
             return User.builder()
                     .username(rs.getString("USERNAME"))
+                    .hashedPassword(rs.getString("HASH_PASSWORD"))
                     .name(rs.getString("NAME"))
                     .surname(rs.getString("SURNAME"))
+                    .email(rs.getString("EMAIL"))
                     .profileImage(rs.getString("PROFILE_IMAGE_URL"))
-                    .hashedPassword(rs.getString("HASH_PASSWORD"))
                     .userType(UserType.getEnumFromValue(rs.getInt("USER_TYPE")))
                     .build();
         } catch (UnexpectedEnumValueException unexpectedEnumValueException) {

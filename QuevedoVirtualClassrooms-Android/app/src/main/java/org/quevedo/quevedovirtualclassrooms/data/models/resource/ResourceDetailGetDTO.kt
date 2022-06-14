@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 data class ResourceDetailGetDTO(
     val uuidResource: String,
     val resourceName: String,
-    var resourceUrl: String,
+    var resourceEndpoint: String,
     val timestamp: LocalDateTime,
     val classroomUUID: String,
     val resourceType: ResourceType,

@@ -40,6 +40,8 @@ public class Resource {
                 .timestamp(this.timestamp)
                 .classroomUUID(this.classroomUUID.toString())
                 .resourceType(this.resourceType)
-                .comments(this.comments).build();
+                .comments(this.comments)
+                .visualizations(this.visualizations)
+                .build();
     }
 }

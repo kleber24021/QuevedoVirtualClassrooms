@@ -55,13 +55,11 @@ android {
             signingConfig signingConfigs.debug
         }
         prod{
-            minifyEnabled true
-            shrinkResources true
             buildConfigField 'String', 'BASE_URL', '"http://informatica.iesquevedo.es:2326/QueVirtualClassroom-1.0/virtual-classrooms/"'
             signingConfig signingConfigs.prod
         }
         dev{
-            buildConfigField 'String', 'BASE_URL', '"http://192.168.1.131:8080:8080/QueVirtualClassroom-1.0/virtual-classrooms/"'
+            buildConfigField 'String', 'BASE_URL', '"http://192.168.1.132:8080/QueVirtualClassroom-1.0/virtual-classrooms/"'
             signingConfig signingConfigs.dev
         }
     }
